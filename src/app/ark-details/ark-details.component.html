@@ -1,0 +1,16 @@
+<h3>Start Session</h3>
+Session Name: {{selectedSession.sessionName}}
+<br>
+Map Name: {{selectedSession.mapNames[0]}}
+<br><br>
+Session Status: {{sessionStatus}}
+<br><br>
+<button *ngIf="!isRunning" class="button" title="Start Session" (click)="startSession()">Start Session</button>
+<button *ngIf="isRunning" class="button" title="Save And Export" (click)="saveAndExportSession()">Save Session</button>
+<button *ngIf="isRunning" class="button" title="Save And Exit" (click)="saveAndExitSession()">Save and Exit Session</button>
+<button *ngIf="!isRunning" [disabled]="isSessionNameEmpty()" class="button" title="Edit Config" (click)="getConfig()">Edit Config</button>
+<div *ngIf="editConfig">
+    <textarea [(ngModel)]="configData"></textarea>
+
+    <button *ngIf="configData" class="button" title="Save Config" (click)="saveConfig()">Save Config</button>
+</div>

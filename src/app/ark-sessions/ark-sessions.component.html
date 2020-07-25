@@ -1,0 +1,6 @@
+<h3>Existing Sessions</h3>
+<ul class="sessions">
+    <li *ngFor="let session of sessions" (click)="onSelect(session)" [class.selected]="session === selectedSession">
+        <span class="badge">{{session.sessionName}}</span> {{session.mapNames.join(', ')}}
+    </li>
+</ul>
