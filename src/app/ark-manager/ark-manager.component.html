@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="column">
+        <div class="tab">
+            <tabs>
+                <div>
+                    <tab tabTitle="Start Existing">
+                        <app-ark-details [selectedSession]="selectedSession"></app-ark-details>
+                    </tab>
+                    <tab tabTitle="Create New">
+                        <app-ark-create (selectedSessionEmitter)="listItemSelected($event)"></app-ark-create>
+                    </tab>
+                </div>
+            </tabs>
+        </div>
+    </div>
+    <div class="column">
+        <app-ark-sessions (selectedSessionEmitter)="listItemSelected($event)"></app-ark-sessions>
+    </div>
+</div>

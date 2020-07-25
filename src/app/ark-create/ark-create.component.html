@@ -1,0 +1,11 @@
+<h3>Create Session</h3>
+<label>Session Name:
+    <input [(ngModel)]="sessionName" placeholder="session"/>
+</label>
+<br>
+<label>Map Name:
+    <input [(ngModel)]="mapName" placeholder="map"/>
+</label>
+<br><br>
+<button class="button" title="Create And Start Session" 
+    (click)="createAndStartSession()">Create And Start Session</button>
