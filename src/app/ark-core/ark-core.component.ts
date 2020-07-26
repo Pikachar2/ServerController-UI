@@ -30,6 +30,7 @@ export class ArkCoreComponent implements OnInit {
   getStatus(): void {
     this.arkService.getStatus().subscribe(serverStatus => {
       this.serverStatus = serverStatus.status;
+      this.isOffline = this.serverStatus == 'Offline';
     });
   }
 

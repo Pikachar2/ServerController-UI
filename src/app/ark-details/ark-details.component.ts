@@ -11,6 +11,7 @@ import { ArkSessionsComponent } from '../ark-sessions/ark-sessions.component';
 })
 export class ArkDetailsComponent implements OnInit {
   @Input() selectedSession: ArkSession;
+  @Input() isOffline: Boolean = false;
 
   sessionStatus: String = "Offline";
   isRunning: Boolean = false;

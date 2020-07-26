@@ -2,4 +2,4 @@
 Server Status: {{serverStatus}}
 <br>
 <button class="button" title="Update Ark" (click)="updateArk()">Update Ark</button>
-<app-ark-manager (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
+<app-ark-manager [isOffline]="isOffline" (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
