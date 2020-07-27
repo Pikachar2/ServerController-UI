@@ -11,12 +11,17 @@ import { ArkSessionsComponent } from '../ark-sessions/ark-sessions.component';
 })
 export class ArkDetailsComponent implements OnInit {
   @Input() selectedSession: ArkSession;
+  @Input() isOffline: Boolean = false;
 
   sessionStatus: String = "Offline";
   isRunning: Boolean = false;
 
   editConfig: Boolean = false;
-  configData: String;
+  gusConfigData: String;
+  gameConfigData: String;
+
+  gusFileName: String = 'GameUserSettings';
+  gameFileName: String = 'Game';
 
   constructor(private arkService: ArkService) { }
 
@@ -51,18 +56,30 @@ export class ArkDetailsComponent implements OnInit {
       });
   }
 
-  getConfig(): void {
+  getConfigData() {
     this.editConfig = !this.editConfig;
-    this.arkService.getConfig(this.selectedSession.sessionName)
+    this.getGusConfig(this.gusFileName);
+    this.getGameConfig(this.gusFileName);
+  }
+
+  getGusConfig(configFileName: String): void {
+    this.arkService.getConfig(this.selectedSession.sessionName, configFileName)
       .subscribe(response => {
-        this.configData = response.configData;
+        this.gusConfigData = response.configData;
       });
   }
 
-  saveConfig(): void {
-    this.sessionStatus = 'Saving Config...';
+  getGameConfig(configFileName: String): void {
+    this.arkService.getConfig(this.selectedSession.sessionName, configFileName)
+      .subscribe(response => {
+        this.gameConfigData = response.configData;
+      });
+  }
+
+  saveConfig(configFileName: String, configData: String): void {
+    this.sessionStatus = `Saving Config: ${configFileName}.ini...`;
     this.editConfig = !this.editConfig;
-    this.arkService.saveConfig(this.selectedSession.sessionName, this.configData)
+    this.arkService.saveConfig(this.selectedSession.sessionName, configData, configFileName)
       .subscribe(response => {
         this.sessionStatus = 'Config Saved!';
       });

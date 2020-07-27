@@ -11,8 +11,9 @@ import { ArkSession } from './ArkSession';
   providedIn: 'root'
 })
 export class ArkService {
+  private serverControllerUrl = 'http://69.143.240.10:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://192.168.1.25:8081/ark';  // URL to web api
-  private serverControllerUrl = 'http://127.0.0.1:8081/ark';  // URL to web api
+  // private serverControllerUrl = 'http://127.0.0.1:8081/ark';  // URL to web api
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -80,16 +81,16 @@ export class ArkService {
     );
   }
 
-  getConfig(sessionName: String): Observable<ArkConfigResponse>  {
-    const url = `${this.serverControllerUrl}/config/${sessionName}`;  
+  getConfig(sessionName: String, configFileName: String): Observable<ArkConfigResponse>  {
+    const url = `${this.serverControllerUrl}/config/${sessionName}/${configFileName}`;  
     return this.http.get<ArkConfigResponse>(url, this.httpOptions).pipe(
       tap(_ => this.log(`attempted to retrieve session config.`)),
       catchError(this.handleError<ArkConfigResponse>(`error retrieving config.`))
     );
   }
   
-  saveConfig(sessionName: String, configData: String): Observable<String>  {
-    const url = `${this.serverControllerUrl}/config/${sessionName}`;
+  saveConfig(sessionName: String, configData: String, configFileName: String): Observable<String>  {
+    const url = `${this.serverControllerUrl}/config/${sessionName}/${configFileName}`;
     return this.http.post<String>(url, configData, this.httpOptions).pipe(
       tap(_ => this.log(`attempted to save session config.`)),
       catchError(this.handleError<String>(`error saving config.`))

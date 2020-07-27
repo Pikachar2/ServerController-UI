@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { SessionStatus } from '../SessionStatus';
 import { ArkSession } from '../ArkSession';
 
@@ -9,6 +9,7 @@ import { ArkSession } from '../ArkSession';
 })
 export class ArkManagerComponent implements OnInit {
   @Output() statusChangeEmitter = new EventEmitter<String>();
+  @Input() isOffline: Boolean = false;
   isRunning: Boolean = false;
   selectedSession: ArkSession;
   constructor() { }
