@@ -81,16 +81,16 @@ export class ArkService {
     );
   }
 
-  getConfig(sessionName: String): Observable<ArkConfigResponse>  {
-    const url = `${this.serverControllerUrl}/config/${sessionName}`;  
+  getConfig(sessionName: String, configFileName: String): Observable<ArkConfigResponse>  {
+    const url = `${this.serverControllerUrl}/config/${sessionName}/${configFileName}`;  
     return this.http.get<ArkConfigResponse>(url, this.httpOptions).pipe(
       tap(_ => this.log(`attempted to retrieve session config.`)),
       catchError(this.handleError<ArkConfigResponse>(`error retrieving config.`))
     );
   }
   
-  saveConfig(sessionName: String, configData: String): Observable<String>  {
-    const url = `${this.serverControllerUrl}/config/${sessionName}`;
+  saveConfig(sessionName: String, configData: String, configFileName: String): Observable<String>  {
+    const url = `${this.serverControllerUrl}/config/${sessionName}/${configFileName}`;
     return this.http.post<String>(url, configData, this.httpOptions).pipe(
       tap(_ => this.log(`attempted to save session config.`)),
       catchError(this.handleError<String>(`error saving config.`))
