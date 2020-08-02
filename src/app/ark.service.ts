@@ -24,7 +24,6 @@ export class ArkService {
 
   }
 
-  /** GET hero by id. Will 404 if id not found */
   getStatus(): Observable<ArkStatusResponse> {
     const url = `${this.serverControllerUrl}/status`;
     return this.http.get<ArkStatusResponse>(url, this.httpOptions).pipe(
@@ -41,11 +40,11 @@ export class ArkService {
     );
   }
 
-  startSession(sessionName: String): Observable<any> {
-    const url = `${this.serverControllerUrl}/start/${sessionName}`;
+  startSession(sessionName: String, mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/start/${sessionName}/${mapName}`;
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to start session: ${sessionName}`)),
-      catchError(this.handleError<any>(`error starting session: ${sessionName}`))
+      tap(_ => this.log(`attempted to start session: ${sessionName}, map: ${mapName}`)),
+      catchError(this.handleError<any>(`error starting session: ${sessionName}, map: ${mapName}`))
     );
   }
 
@@ -121,5 +120,14 @@ export class ArkService {
       return of(result as T);
     };
   }
+
+  getMaps(): Observable<String[]>  {
+    const url = `${this.serverControllerUrl}/maps`;
+    return this.http.get<String[]>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`attempted to retrieve maps.`)),
+      catchError(this.handleError<String[]>(`error retrieving maps.`))
+    );
+  }
+
 
 }
