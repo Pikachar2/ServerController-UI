@@ -59,7 +59,7 @@ export class ArkDetailsComponent implements OnInit {
   getConfigData() {
     this.editConfig = !this.editConfig;
     this.getGusConfig(this.gusFileName);
-    this.getGameConfig(this.gusFileName);
+    this.getGameConfig(this.gameFileName);
   }
 
   getGusConfig(configFileName: String): void {
