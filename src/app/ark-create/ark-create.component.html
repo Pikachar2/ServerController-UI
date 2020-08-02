@@ -4,7 +4,10 @@
 </label>
 <br>
 <label>Map Name:
-    <input [(ngModel)]="mapName" placeholder="map"/>
+    <!-- <input [(ngModel)]="mapName" placeholder="map"/> -->
+    <select [(ngModel)]="mapName">
+        <option *ngFor="let map of maps" [value]="map">{{map}}</option>
+    </select>
 </label>
 <br><br>
 <button class="button" title="Create And Start Session" 
