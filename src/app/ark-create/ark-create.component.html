@@ -4,7 +4,6 @@
 </label>
 <br>
 <label>Map Name:
-    <!-- <input [(ngModel)]="mapName" placeholder="map"/> -->
     <select [(ngModel)]="mapName">
         <option *ngFor="let map of maps" [value]="map">{{map}}</option>
     </select>

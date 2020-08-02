@@ -23,20 +23,25 @@ export class ArkDetailsComponent implements OnInit {
   gusFileName: String = 'GameUserSettings';
   gameFileName: String = 'Game';
 
+  mapName: String;
+  maps: String[];
+
   constructor(private arkService: ArkService) { }
 
   ngOnInit(): void {
     this.selectedSession = { sessionName: '', mapNames: [] };
+    this.getMaps();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.selectedSession = changes.selectedSession.currentValue;
+    this.mapName = this.selectedSession.mapNames[0];
   }
 
   startSession(): void {
     this.sessionStatus = 'Starting...';
     this.isRunning = true;
-    this.arkService.startSession(this.selectedSession.sessionName)
+    this.arkService.startSession(this.selectedSession.sessionName, this.mapName)
       .subscribe(response => {
       });
   }
@@ -82,6 +87,16 @@ export class ArkDetailsComponent implements OnInit {
     this.arkService.saveConfig(this.selectedSession.sessionName, configData, configFileName)
       .subscribe(response => {
         this.sessionStatus = 'Config Saved!';
+      });
+  }
+
+  getMaps(): void {
+    this.arkService.getMaps()
+      .subscribe(maps => {
+        this.maps = maps;
+        this.mapName = this.selectedSession.mapNames[0];
+        console.log('got maps');
+        console.log(maps);
       });
   }
 

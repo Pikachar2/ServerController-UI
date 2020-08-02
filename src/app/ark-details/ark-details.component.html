@@ -2,6 +2,12 @@
 Session Name: {{selectedSession.sessionName}}
 <br>
 Map Name: {{selectedSession.mapNames[0]}}
+<br>
+<label>Map Name:
+    <select [(ngModel)]="mapName">
+        <option *ngFor="let map of maps" [value]="map">{{map}}</option>
+    </select>
+</label>
 <br><br>
 Session Status: {{sessionStatus}}
 <br><br>

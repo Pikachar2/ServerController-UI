@@ -40,11 +40,11 @@ export class ArkService {
     );
   }
 
-  startSession(sessionName: String): Observable<any> {
-    const url = `${this.serverControllerUrl}/start/${sessionName}`;
+  startSession(sessionName: String, mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/start/${sessionName}/${mapName}`;
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to start session: ${sessionName}`)),
-      catchError(this.handleError<any>(`error starting session: ${sessionName}`))
+      tap(_ => this.log(`attempted to start session: ${sessionName}, map: ${mapName}`)),
+      catchError(this.handleError<any>(`error starting session: ${sessionName}, map: ${mapName}`))
     );
   }
 
