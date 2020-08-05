@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ArkService } from '../ark.service';
-import { SessionStatus } from '../SessionStatus';
 import { ArkSession } from '../ArkSession';
-import { ArkSessionsComponent } from '../ark-sessions/ark-sessions.component';
 
 @Component({
   selector: 'app-ark-details',
@@ -12,9 +10,10 @@ import { ArkSessionsComponent } from '../ark-sessions/ark-sessions.component';
 export class ArkDetailsComponent implements OnInit {
   @Input() selectedSession: ArkSession;
   @Input() isOffline: Boolean = false;
+  @Output() statusChangeEmitter = new EventEmitter<void>();
 
-  sessionStatus: String = "Offline";
-  isRunning: Boolean = false;
+  sessionStatus: String = "";
+  buttonsEnabled: Boolean = true;
 
   editConfig: Boolean = false;
   gusConfigData: String;
@@ -39,26 +38,28 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   startSession(): void {
-    this.sessionStatus = 'Starting...';
-    this.isRunning = true;
+    this.buttonsEnabled = false;
     this.arkService.startSession(this.selectedSession.sessionName, this.mapName)
       .subscribe(response => {
       });
+    this.emitAndEnableButtons();
   }
 
   saveAndExportSession(): void {
-    this.sessionStatus = 'Saving...';
+    this.buttonsEnabled = false;
     this.arkService.saveAndExportSession()
       .subscribe(response => {
       });
+    this.emitAndEnableButtons();
   }
 
   saveAndExitSession(): void {
-    this.sessionStatus = 'Saving and preparing to stop...';
+    this.buttonsEnabled = false;
     this.arkService.saveAndStopSession()
       .subscribe(response => {
-        this.isRunning = false;
+        this.statusChangeEmitter.emit();
       });
+    this.emitAndEnableButtons();
   }
 
   getConfigData() {
@@ -82,12 +83,14 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   saveConfig(configFileName: String, configData: String): void {
+    this.buttonsEnabled = false;
     this.sessionStatus = `Saving Config: ${configFileName}.ini...`;
     this.editConfig = !this.editConfig;
     this.arkService.saveConfig(this.selectedSession.sessionName, configData, configFileName)
       .subscribe(response => {
         this.sessionStatus = 'Config Saved!';
       });
+    this.emitAndEnableButtons();
   }
 
   getMaps(): void {
@@ -102,6 +105,11 @@ export class ArkDetailsComponent implements OnInit {
 
   isSessionNameEmpty(): Boolean {
     return (!this.selectedSession.sessionName || 0 === this.selectedSession.sessionName.length);
+  }
+
+  emitAndEnableButtons() {
+    this.statusChangeEmitter.emit();
+    this.buttonsEnabled = true;
   }
 
 }

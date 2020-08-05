@@ -1,5 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { SessionStatus } from '../SessionStatus';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ArkSession } from '../ArkSession';
 
 @Component({
@@ -8,19 +7,17 @@ import { ArkSession } from '../ArkSession';
   styleUrls: ['./ark-manager.component.css']
 })
 export class ArkManagerComponent implements OnInit {
-  @Output() statusChangeEmitter = new EventEmitter<String>();
+  @Output() statusChangeEmitter = new EventEmitter<void>();
   @Input() isOffline: Boolean = false;
-  isRunning: Boolean = false;
   selectedSession: ArkSession;
+  existingSessionNames: String[];
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  statusUpdateEvent(statusChange: SessionStatus) {
-    this.isRunning = statusChange.isRunning;
-    console.log('startSession' + statusChange);
-    this.statusChangeEmitter.emit(statusChange.statusMessage);
+  statusUpdateEvent(event?: any) {
+    this.statusChangeEmitter.emit();
   }
 
   listItemSelected(selectedSession: ArkSession) {
@@ -28,5 +25,9 @@ export class ArkManagerComponent implements OnInit {
     console.log(selectedSession);
     this.selectedSession = selectedSession;
     //TODO: make sure to hide createSession
+  }
+
+  getSessionNames(list: String[]) {
+    this.existingSessionNames = list;
   }
 }
