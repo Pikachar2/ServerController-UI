@@ -1,6 +1,6 @@
 <h3>Create Session</h3>
 <label>Session Name:
-    <input [(ngModel)]="sessionName" placeholder="session"/>
+    <input [(ngModel)]="sessionName" placeholder="session" (input)="validateSessionName()" [pattern]="'^[a-zA-Z0-9\-\_]$'"/>
 </label>
 <br>
 <label>Map Name:
@@ -9,5 +9,5 @@
     </select>
 </label>
 <br><br>
-<button class="button" title="Create And Start Session" 
+<button class="button" title="Create And Start Session" [disabled]="isCreateButtonEnabled()"
     (click)="createAndStartSession()">Create And Start Session</button>

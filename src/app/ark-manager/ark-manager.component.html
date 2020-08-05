@@ -1,13 +1,13 @@
 <div class="row">
     <div class="column">
         <div class="tab">
-            <tabs>
+            <tabs class="tabs">
                 <div>
                     <tab tabTitle="Start Existing">
                         <app-ark-details [isOffline]="isOffline" [selectedSession]="selectedSession" (statusChangeEmitter)="statusUpdateEvent($event)"></app-ark-details>
                     </tab>
                     <tab tabTitle="Create New">
-                        <app-ark-create (selectedSessionEmitter)="listItemSelected($event)"></app-ark-create>
+                        <app-ark-create [isOffline]="isOffline" (selectedSessionEmitter)="listItemSelected($event)"></app-ark-create>
                     </tab>
                 </div>
             </tabs>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { ArkService } from '../ark.service';
 import { ArkSession } from '../ArkSession';
 
@@ -8,11 +8,14 @@ import { ArkSession } from '../ArkSession';
   styleUrls: ['./ark-create.component.css']
 })
 export class ArkCreateComponent implements OnInit {
+  @Input() isOffline: Boolean = false;
   @Output() selectedSessionEmitter = new EventEmitter<ArkSession>();
 
   sessionName: String;
   mapName: String;
   maps: String[];
+
+  validName: Boolean = false;
 
   constructor(private arkService: ArkService) { }
 
@@ -37,6 +40,31 @@ export class ArkCreateComponent implements OnInit {
         console.log('got maps');
         console.log(maps);
       });
+  }
+
+  validateSessionName(){
+    console.log('things changed');
+    const regex = new RegExp('^(\\w|-){1,30}$');
+    var val: string = this.sessionName.valueOf();
+    console.log('regex: ');
+    console.log(regex);
+    console.log('val: ');
+    console.log(val);
+    if(regex.test(val)){
+      this.validName = true;
+    } else {
+      this.validName = false;
+    }
+    console.log('ValidName: ');
+    console.log(this.validName);
+  }
+
+  isCreateButtonEnabled() {
+    console.log('isCreateButtonEnabled');
+    if(this.isOffline){
+      return !this.validName;
+    }
+    return true;
   }
 
 }
