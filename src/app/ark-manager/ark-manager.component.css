@@ -10,3 +10,11 @@
     clear: both;
   }
 
+div.row {
+  background-color: #222;
+  
+}
+
+div.tab {
+  padding-left: 1rem;
+}

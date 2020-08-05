@@ -10,7 +10,7 @@ import { ArkService } from '../ark.service';
 export class ArkCoreComponent implements OnInit {
 
   serverStatus: String = '';
-  isOffline: boolean = this.serverStatus == 'Offline';
+  isOffline: boolean = this.serverStatus == 'Server is OFFLINE';
 
   subscription: Subscription;
 
@@ -20,7 +20,9 @@ export class ArkCoreComponent implements OnInit {
   ngOnInit(): void {
     this.getStatus();
     const source = interval(15000);
-    this.subscription = source.subscribe(val => this.getStatus());
+    this.subscription = source.subscribe(val => {
+      this.getStatus();
+    });
   }
 
   ngOnDestroy() {
@@ -30,6 +32,7 @@ export class ArkCoreComponent implements OnInit {
   getStatus(): void {
     this.arkService.getStatus().subscribe(serverStatus => {
       this.serverStatus = serverStatus.status;
+      this.isOffline = this.serverStatus == 'Server is OFFLINE';
     });
   }
 
@@ -38,9 +41,12 @@ export class ArkCoreComponent implements OnInit {
     this.arkService.updateArk().subscribe(response => { this.getStatus() });
   }
 
-  statusChanged(statusChange: String) {
-    this.serverStatus = statusChange;
-    console.log('startSession' + statusChange);
+  statusChanged(event?: any) {
+    // this.serverStatus = statusChange;
+    // console.log('startSession' + statusChange);
+    console.log('before status call');
+    this.getStatus();
+    console.log('after sstatus call');
   }
 
 }

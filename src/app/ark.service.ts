@@ -11,8 +11,9 @@ import { ArkSession } from './ArkSession';
   providedIn: 'root'
 })
 export class ArkService {
+  private serverControllerUrl = 'http://69.143.240.10:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://192.168.1.25:8081/ark';  // URL to web api
-  private serverControllerUrl = 'http://127.0.0.1:8081/ark';  // URL to web api
+  // private serverControllerUrl = 'http://127.0.0.1:8081/ark';  // URL to web api
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -23,7 +24,6 @@ export class ArkService {
 
   }
 
-  /** GET hero by id. Will 404 if id not found */
   getStatus(): Observable<ArkStatusResponse> {
     const url = `${this.serverControllerUrl}/status`;
     return this.http.get<ArkStatusResponse>(url, this.httpOptions).pipe(
@@ -40,11 +40,11 @@ export class ArkService {
     );
   }
 
-  startSession(sessionName: String): Observable<any> {
-    const url = `${this.serverControllerUrl}/start/${sessionName}`;
+  startSession(sessionName: String, mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/start/${sessionName}/${mapName}`;
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to start session: ${sessionName}`)),
-      catchError(this.handleError<any>(`error starting session: ${sessionName}`))
+      tap(_ => this.log(`attempted to start session: ${sessionName}, map: ${mapName}`)),
+      catchError(this.handleError<any>(`error starting session: ${sessionName}, map: ${mapName}`))
     );
   }
 
@@ -80,16 +80,16 @@ export class ArkService {
     );
   }
 
-  getConfig(sessionName: String): Observable<ArkConfigResponse>  {
-    const url = `${this.serverControllerUrl}/config/${sessionName}`;  
+  getConfig(sessionName: String, configFileName: String): Observable<ArkConfigResponse>  {
+    const url = `${this.serverControllerUrl}/config/${sessionName}/${configFileName}`;  
     return this.http.get<ArkConfigResponse>(url, this.httpOptions).pipe(
       tap(_ => this.log(`attempted to retrieve session config.`)),
       catchError(this.handleError<ArkConfigResponse>(`error retrieving config.`))
     );
   }
   
-  saveConfig(sessionName: String, configData: String): Observable<String>  {
-    const url = `${this.serverControllerUrl}/config/${sessionName}`;
+  saveConfig(sessionName: String, configData: String, configFileName: String): Observable<String>  {
+    const url = `${this.serverControllerUrl}/config/${sessionName}/${configFileName}`;
     return this.http.post<String>(url, configData, this.httpOptions).pipe(
       tap(_ => this.log(`attempted to save session config.`)),
       catchError(this.handleError<String>(`error saving config.`))
@@ -120,5 +120,14 @@ export class ArkService {
       return of(result as T);
     };
   }
+
+  getMaps(): Observable<String[]>  {
+    const url = `${this.serverControllerUrl}/maps`;
+    return this.http.get<String[]>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`attempted to retrieve maps.`)),
+      catchError(this.handleError<String[]>(`error retrieving maps.`))
+    );
+  }
+
 
 }
