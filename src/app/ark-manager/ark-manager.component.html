@@ -4,7 +4,7 @@
             <tabs>
                 <div>
                     <tab tabTitle="Start Existing">
-                        <app-ark-details [isOffline]="isOffline" [selectedSession]="selectedSession"></app-ark-details>
+                        <app-ark-details [isOffline]="isOffline" [selectedSession]="selectedSession" (statusChangeEmitter)="statusUpdateEvent($event)"></app-ark-details>
                     </tab>
                     <tab tabTitle="Create New">
                         <app-ark-create (selectedSessionEmitter)="listItemSelected($event)"></app-ark-create>

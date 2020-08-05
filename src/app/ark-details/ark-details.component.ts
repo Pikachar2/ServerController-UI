@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ArkService } from '../ark.service';
-import { SessionStatus } from '../SessionStatus';
 import { ArkSession } from '../ArkSession';
-import { ArkSessionsComponent } from '../ark-sessions/ark-sessions.component';
 
 @Component({
   selector: 'app-ark-details',
@@ -12,6 +10,7 @@ import { ArkSessionsComponent } from '../ark-sessions/ark-sessions.component';
 export class ArkDetailsComponent implements OnInit {
   @Input() selectedSession: ArkSession;
   @Input() isOffline: Boolean = false;
+  @Output() statusChangeEmitter = new EventEmitter<void>();
 
   sessionStatus: String = "Offline";
   isRunning: Boolean = false;
@@ -44,6 +43,8 @@ export class ArkDetailsComponent implements OnInit {
     this.arkService.startSession(this.selectedSession.sessionName, this.mapName)
       .subscribe(response => {
       });
+    console.log('before first emit');
+    this.statusChangeEmitter.emit();
   }
 
   saveAndExportSession(): void {
@@ -51,6 +52,7 @@ export class ArkDetailsComponent implements OnInit {
     this.arkService.saveAndExportSession()
       .subscribe(response => {
       });
+    this.statusChangeEmitter.emit();
   }
 
   saveAndExitSession(): void {
@@ -59,12 +61,14 @@ export class ArkDetailsComponent implements OnInit {
       .subscribe(response => {
         this.isRunning = false;
       });
+    this.statusChangeEmitter.emit();
   }
 
   getConfigData() {
     this.editConfig = !this.editConfig;
     this.getGusConfig(this.gusFileName);
     this.getGameConfig(this.gameFileName);
+    this.statusChangeEmitter.emit();
   }
 
   getGusConfig(configFileName: String): void {
@@ -88,6 +92,7 @@ export class ArkDetailsComponent implements OnInit {
       .subscribe(response => {
         this.sessionStatus = 'Config Saved!';
       });
+    this.statusChangeEmitter.emit();
   }
 
   getMaps(): void {

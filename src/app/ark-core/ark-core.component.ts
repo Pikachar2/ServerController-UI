@@ -41,9 +41,12 @@ export class ArkCoreComponent implements OnInit {
     this.arkService.updateArk().subscribe(response => { this.getStatus() });
   }
 
-  statusChanged(statusChange: String) {
-    this.serverStatus = statusChange;
-    console.log('startSession' + statusChange);
+  statusChanged(event?: any) {
+    // this.serverStatus = statusChange;
+    // console.log('startSession' + statusChange);
+    console.log('before status call');
+    this.getStatus();
+    console.log('after sstatus call');
   }
 
 }

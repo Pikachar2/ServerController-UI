@@ -2,4 +2,6 @@
 <h3>Server Status: {{serverStatus}}</h3>
 <br>
 <button class="button" title="Update Ark" (click)="updateArk()">Update Ark</button>
+<a *ngIf="!isOffline" href="steam://connect/69.143.240.10:27015" class="button">Join Current Session</a>
 <app-ark-manager [isOffline]="isOffline" (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
+
