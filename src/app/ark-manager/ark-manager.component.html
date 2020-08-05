@@ -7,13 +7,15 @@
                         <app-ark-details [isOffline]="isOffline" [selectedSession]="selectedSession" (statusChangeEmitter)="statusUpdateEvent($event)"></app-ark-details>
                     </tab>
                     <tab tabTitle="Create New">
-                        <app-ark-create [isOffline]="isOffline" (selectedSessionEmitter)="listItemSelected($event)"></app-ark-create>
+                        <app-ark-create [isOffline]="isOffline" [existingSessionNames]="existingSessionNames" (selectedSessionEmitter)="listItemSelected($event)"></app-ark-create>
                     </tab>
                 </div>
             </tabs>
         </div>
     </div>
     <div class="column">
-        <app-ark-sessions (selectedSessionEmitter)="listItemSelected($event)"></app-ark-sessions>
+        <app-ark-sessions (selectedSessionEmitter)="listItemSelected($event)"
+            (sessionNameEmitter)="getSessionNames($event)"
+        ></app-ark-sessions>
     </div>
 </div>

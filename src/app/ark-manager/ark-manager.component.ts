@@ -10,6 +10,7 @@ export class ArkManagerComponent implements OnInit {
   @Output() statusChangeEmitter = new EventEmitter<void>();
   @Input() isOffline: Boolean = false;
   selectedSession: ArkSession;
+  existingSessionNames: String[];
   constructor() { }
 
   ngOnInit(): void {
@@ -24,5 +25,9 @@ export class ArkManagerComponent implements OnInit {
     console.log(selectedSession);
     this.selectedSession = selectedSession;
     //TODO: make sure to hide createSession
+  }
+
+  getSessionNames(list: String[]) {
+    this.existingSessionNames = list;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input, SimpleChanges } from '@angular/core';
 import { ArkService } from '../ark.service';
 import { ArkSession } from '../ArkSession';
 
@@ -9,6 +9,7 @@ import { ArkSession } from '../ArkSession';
 })
 export class ArkCreateComponent implements OnInit {
   @Input() isOffline: Boolean = false;
+  @Input() existingSessionNames: String[];
   @Output() selectedSessionEmitter = new EventEmitter<ArkSession>();
 
   sessionName: String;
@@ -21,6 +22,12 @@ export class ArkCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMaps();
+    console.log('init create');
+    console.log(this.existingSessionNames);
+  }
+  
+  ngOnChanges(changes: SimpleChanges) {
+    this.existingSessionNames = changes.selectedSession.currentValue;
   }
 
   createAndStartSession(): void {
@@ -43,18 +50,21 @@ export class ArkCreateComponent implements OnInit {
   }
 
   validateSessionName(){
-    console.log('things changed');
     const regex = new RegExp('^(\\w|-){1,30}$');
-    var val: string = this.sessionName.valueOf();
+    var val: string = this.sessionName.valueOf().toLowerCase();
     if(regex.test(val)){
-      this.validName = true;
+      // check if in list
+      if(this.existingSessionNames.indexOf(val) > -1){
+        this.validName = false;
+      } else {
+        this.validName = true;
+      }
     } else {
       this.validName = false;
     }
   }
 
   isCreateButtonEnabled() {
-    console.log('isCreateButtonEnabled');
     if(this.isOffline){
       return !this.validName;
     }

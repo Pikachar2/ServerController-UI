@@ -9,6 +9,7 @@ import { ArkSession } from '../ArkSession';
 })
 export class ArkSessionsComponent implements OnInit {
   @Output() selectedSessionEmitter = new EventEmitter<ArkSession>();
+  @Output() sessionNameEmitter = new EventEmitter<String[]>();
 
   selectedSession: ArkSession;
   sessions: ArkSession[];
@@ -25,6 +26,7 @@ export class ArkSessionsComponent implements OnInit {
         this.sessions = sessions;
         console.log('got sessions');
         console.log(sessions);
+        this.createAndEmitSessionList(sessions);
     });
   }
 
@@ -34,4 +36,11 @@ export class ArkSessionsComponent implements OnInit {
     this.selectedSessionEmitter.emit(this.selectedSession);
   }
 
+  createAndEmitSessionList(sessions: ArkSession[]) {
+    var sessionNameArray: String[] = [];
+    sessions.forEach(session => {
+      sessionNameArray.push(session.sessionName.toLowerCase());
+    });
+    this.sessionNameEmitter.emit(sessionNameArray);
+  }
 }
