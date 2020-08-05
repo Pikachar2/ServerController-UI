@@ -9,7 +9,6 @@ import { ArkSession } from '../ArkSession';
 export class ArkManagerComponent implements OnInit {
   @Output() statusChangeEmitter = new EventEmitter<void>();
   @Input() isOffline: Boolean = false;
-  // isRunning: Boolean = false;
   selectedSession: ArkSession;
   constructor() { }
 
@@ -17,9 +16,6 @@ export class ArkManagerComponent implements OnInit {
   }
 
   statusUpdateEvent(event?: any) {
-    // this.isRunning = statusChange.isRunning;
-    // console.log('startSession' + statusChange);
-    console.log('before second emit');
     this.statusChangeEmitter.emit();
   }
 

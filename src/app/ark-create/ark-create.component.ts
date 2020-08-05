@@ -46,17 +46,11 @@ export class ArkCreateComponent implements OnInit {
     console.log('things changed');
     const regex = new RegExp('^(\\w|-){1,30}$');
     var val: string = this.sessionName.valueOf();
-    console.log('regex: ');
-    console.log(regex);
-    console.log('val: ');
-    console.log(val);
     if(regex.test(val)){
       this.validName = true;
     } else {
       this.validName = false;
     }
-    console.log('ValidName: ');
-    console.log(this.validName);
   }
 
   isCreateButtonEnabled() {
