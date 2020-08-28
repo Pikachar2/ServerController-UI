@@ -9,6 +9,13 @@ Session Name: {{selectedSession.sessionName}}
 <br><br>
 Session Status: {{sessionStatus}}
 <br><br>
+<div *ngIf="!isOffline && !isSessionNameEmpty()" >
+    <button class="button" title="Kick Player" (click)="kickPlayer()">Kick Player</button>
+    <label>Player Id:
+        <input [(ngModel)]="playerId" placeholder="Steam Id"/>
+    </label>
+    <br>
+</div>
 <button *ngIf="isOffline" class="button" [disabled]="isSessionNameEmpty() && !buttonsEnabled" title="Start Session" (click)="startSession()">Start Session</button>
 <button *ngIf="!isOffline && !isSessionNameEmpty()" [disabled]="!buttonsEnabled" class="button" title="Save And Export" (click)="saveAndExportSession()">Save Session</button>
 <button *ngIf="!isOffline && !isSessionNameEmpty()" [disabled]="!buttonsEnabled" class="button" title="Save And Exit" (click)="saveAndExitSession()">Save and Exit Session</button>

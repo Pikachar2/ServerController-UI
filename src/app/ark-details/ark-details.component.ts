@@ -25,6 +25,8 @@ export class ArkDetailsComponent implements OnInit {
   mapName: String;
   maps: String[];
 
+  playerId: String;
+
   constructor(private arkService: ArkService) { }
 
   ngOnInit(): void {
@@ -110,6 +112,15 @@ export class ArkDetailsComponent implements OnInit {
   emitAndEnableButtons() {
     this.statusChangeEmitter.emit();
     this.buttonsEnabled = true;
+  }
+
+  kickPlayer(): void {
+    console.log('details: kickPlayer: playerId: ' + this.playerId);
+    this.arkService.kickPlayer(this.playerId)
+      .subscribe(response => {
+        // TODO: STUB
+        console.log('returned from kickPlayer');
+      });
   }
 
 }

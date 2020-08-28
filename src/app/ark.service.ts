@@ -129,5 +129,13 @@ export class ArkService {
     );
   }
 
+  kickPlayer(playerId: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/kick/${playerId}`;
+    console.log('service: kickPlayer: url: ' + url);
 
+    return this.http.get<any>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`attempted to kick player: ${playerId}`)),
+      catchError(this.handleError<any>(`error kicking player: ${playerId}`))
+    );
+  }
 }
