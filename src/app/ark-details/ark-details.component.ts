@@ -27,6 +27,9 @@ export class ArkDetailsComponent implements OnInit {
 
   playerId: String;
 
+  startedSessionName: String;
+  startedSessionCount: number = 0;
+
   constructor(private arkService: ArkService) { }
 
   ngOnInit(): void {
@@ -40,6 +43,10 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   startSession(): void {
+    if(!this.startedSessionName) {
+      this.startedSessionName = this.selectedSession.sessionName;
+      this.startedSessionCount++;
+    }
     this.buttonsEnabled = false;
     this.arkService.startSession(this.selectedSession.sessionName, this.mapName)
       .subscribe(response => {
@@ -49,6 +56,7 @@ export class ArkDetailsComponent implements OnInit {
 
   saveAndExportSession(): void {
     this.buttonsEnabled = false;
+    // TODO: pass map name
     this.arkService.saveAndExportSession()
       .subscribe(response => {
       });
@@ -56,7 +64,9 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   saveAndExitSession(): void {
+    this.startedSessionCount--;
     this.buttonsEnabled = false;
+    // TODO: pass map name
     this.arkService.saveAndStopSession()
       .subscribe(response => {
         this.statusChangeEmitter.emit();
@@ -106,7 +116,14 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   isSessionNameEmpty(): Boolean {
+    console.log('selectedSession.name: ' + this.selectedSession.sessionName);
+    console.log('selectedSession.name.Length: ' + this.selectedSession.sessionName.length);
+    console.log('isSessionNameEmpty: ' + (!this.selectedSession.sessionName || 0 === this.selectedSession.sessionName.length));
     return (!this.selectedSession.sessionName || 0 === this.selectedSession.sessionName.length);
+  }
+
+  isSessionNameSame(): Boolean {
+   return (this.startedSessionName === this.selectedSession.sessionName);
   }
 
   emitAndEnableButtons() {
@@ -116,6 +133,7 @@ export class ArkDetailsComponent implements OnInit {
 
   kickPlayer(): void {
     console.log('details: kickPlayer: playerId: ' + this.playerId);
+    // TODO: pass map name -- at least i think i'll need this to determine which RCOn to use
     this.arkService.kickPlayer(this.playerId)
       .subscribe(response => {
         // TODO: STUB

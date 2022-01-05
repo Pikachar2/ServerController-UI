@@ -10,6 +10,8 @@ import { ArkService } from '../ark.service';
 export class ArkCoreComponent implements OnInit {
 
   serverStatus: String = '';
+  currentSessionName: String = '';
+  mapNames: String[];
   isOffline: boolean = this.serverStatus == 'Server is OFFLINE';
 
   subscription: Subscription;
@@ -32,6 +34,8 @@ export class ArkCoreComponent implements OnInit {
   getStatus(): void {
     this.arkService.getStatus().subscribe(serverStatus => {
       this.serverStatus = serverStatus.status;
+      this.currentSessionName = serverStatus.currentSessionName;
+      this.mapNames = serverStatus.mapNames;
       this.isOffline = this.serverStatus == 'Server is OFFLINE';
     });
   }
