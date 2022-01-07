@@ -57,7 +57,7 @@ export class ArkDetailsComponent implements OnInit {
   saveAndExportSession(): void {
     this.buttonsEnabled = false;
     // TODO: pass map name
-    this.arkService.saveAndExportSession()
+    this.arkService.saveAndExportSession(this.mapName)
       .subscribe(response => {
       });
     this.emitAndEnableButtons();
@@ -67,7 +67,7 @@ export class ArkDetailsComponent implements OnInit {
     this.startedSessionCount--;
     this.buttonsEnabled = false;
     // TODO: pass map name
-    this.arkService.saveAndStopSession()
+    this.arkService.saveAndStopSession(this.mapName)
       .subscribe(response => {
         this.statusChangeEmitter.emit();
       });
@@ -116,14 +116,29 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   isSessionNameEmpty(): Boolean {
-    console.log('selectedSession.name: ' + this.selectedSession.sessionName);
-    console.log('selectedSession.name.Length: ' + this.selectedSession.sessionName.length);
-    console.log('isSessionNameEmpty: ' + (!this.selectedSession.sessionName || 0 === this.selectedSession.sessionName.length));
     return (!this.selectedSession.sessionName || 0 === this.selectedSession.sessionName.length);
   }
 
   isSessionNameSame(): Boolean {
    return (this.startedSessionName === this.selectedSession.sessionName);
+  }
+
+  isMapInUse(): Boolean {
+    return this.selectedSession.mapNames.includes(this.mapName);
+  }
+
+  isStartButtonEnabled(): Boolean {
+    var sessionNameIsPopulated = !this.isSessionNameEmpty();
+    var sessionNameIsSame = this.isSessionNameSame() && sessionNameIsPopulated;
+    var mapNotUsed = !this.isMapInUse();
+
+    console.log('sessionNameIsPopulated: ' + sessionNameIsPopulated);
+    console.log('sessionNameIsSame(): ' + this.isSessionNameSame());
+    console.log('sessionNameIsSame: ' + sessionNameIsSame);
+    console.log('mapNotUsed: ' + mapNotUsed); 
+    console.log('----------------');
+
+    return sessionNameIsPopulated || (sessionNameIsSame && mapNotUsed);
   }
 
   emitAndEnableButtons() {

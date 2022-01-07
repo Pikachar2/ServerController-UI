@@ -16,10 +16,10 @@ Session Status: {{sessionStatus}}
     </label>
     <br>
 </div>
-<button *ngIf="!isSessionNameEmpty() && isSessionNameSame()" class="button" [disabled]="isSessionNameEmpty() && !buttonsEnabled" title="Start Session" (click)="startSession()">Start Session</button>
+<button *ngIf="isStartButtonEnabled()" class="button" [disabled]="isSessionNameEmpty() && !buttonsEnabled" title="Start Session" (click)="startSession()">Start Map</button>
 <!-- <button *ngIf="isOffline" class="button" [disabled]="isSessionNameEmpty() && !buttonsEnabled" title="Start Session" (click)="startSession()">Start Session</button> -->
-<button *ngIf="!isOffline && !isSessionNameEmpty()" [disabled]="!buttonsEnabled" class="button" title="Save And Export" (click)="saveAndExportSession()">Save Session</button>
-<button *ngIf="!isOffline && !isSessionNameEmpty()" [disabled]="!buttonsEnabled" class="button" title="Save And Exit" (click)="saveAndExitSession()">Save and Exit Session</button>
+<button *ngIf="!isOffline && !isSessionNameEmpty()" [disabled]="!buttonsEnabled" class="button" title="Save And Export" (click)="saveAndExportSession()">Save Map</button>
+<button *ngIf="!isOffline && !isSessionNameEmpty()" [disabled]="!buttonsEnabled" class="button" title="Save And Exit" (click)="saveAndExitSession()">Save and Exit Map</button>
 <button *ngIf="isOffline && !isSessionNameEmpty()" [disabled]="isSessionNameEmpty() && !buttonsEnabled" class="button" title="Edit Config" (click)="getConfigData()">Edit Config</button>
 <br><br><br> 
 <div *ngIf="isOffline && !isSessionNameEmpty() && editConfig">
