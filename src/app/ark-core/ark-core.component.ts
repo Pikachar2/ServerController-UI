@@ -13,7 +13,7 @@ export class ArkCoreComponent implements OnInit {
   currentSessionName: String = '';
   mapNames: String[];
   isOffline: boolean = this.serverStatus == 'Server is OFFLINE';
-
+  numMapsRunning: Number;
   subscription: Subscription;
 
 
@@ -36,6 +36,7 @@ export class ArkCoreComponent implements OnInit {
       this.serverStatus = serverStatus.status;
       this.currentSessionName = serverStatus.currentSessionName;
       this.mapNames = serverStatus.mapNames;
+      this.numMapsRunning = this.mapNames.length;
       this.isOffline = this.serverStatus == 'Server is OFFLINE';
     });
   }

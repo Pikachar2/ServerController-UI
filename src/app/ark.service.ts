@@ -138,4 +138,13 @@ export class ArkService {
       catchError(this.handleError<any>(`error kicking player: ${playerId} from map: ${mapName}`))
     );
   }
+
+  getMaxMapsRunning(): Observable<Number>  {
+    const url = `${this.serverControllerUrl}/maxMapsRunning`;
+    return this.http.get<Number>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`attempted to save session.`)),
+      catchError(this.handleError<Number>(`error saving session.`))
+    );
+  }
+
 }

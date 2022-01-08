@@ -5,5 +5,5 @@
 <br>
 <button class="button" title="Update Ark" (click)="updateArk()">Update Ark</button>
 <a *ngIf="!isOffline" href="steam://connect/73.78.14.133:27015" class="button">Join Current Session</a>
-<app-ark-manager [isOffline]="isOffline" (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
+<app-ark-manager [isOffline]="isOffline" [numMapsRunning]="numMapsRunning" (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
 

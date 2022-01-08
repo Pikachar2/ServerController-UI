@@ -10,6 +10,7 @@ import { ArkSession } from '../ArkSession';
 export class ArkDetailsComponent implements OnInit {
   @Input() selectedSession: ArkSession;
   @Input() isOffline: Boolean = false;
+  @Input() numMapsRunning: Number;
   @Output() statusChangeEmitter = new EventEmitter<void>();
 
   sessionStatus: String = "";
@@ -24,6 +25,7 @@ export class ArkDetailsComponent implements OnInit {
 
   mapName: String;
   maps: String[];
+  maxMapsRunning: Number;
 
   playerId: String;
 
@@ -35,6 +37,7 @@ export class ArkDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.selectedSession = { sessionName: '', mapNames: [] };
     this.getMaps();
+    this.getMaxMapsRunning();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -127,10 +130,15 @@ export class ArkDetailsComponent implements OnInit {
     return this.selectedSession.mapNames.includes(this.mapName);
   }
 
+  isMaxCountReached(): Boolean {
+    return this.numMapsRunning === this.maxMapsRunning;
+  }
+
   isStartButtonEnabled(): Boolean {
     var sessionNameIsPopulated = !this.isSessionNameEmpty();
     var sessionNameIsSame = this.isSessionNameSame() && sessionNameIsPopulated;
     var mapNotUsed = !this.isMapInUse();
+    var maxCountReached = this.isMaxCountReached();
 
     console.log('sessionNameIsPopulated: ' + sessionNameIsPopulated);
     console.log('sessionNameIsSame(): ' + this.isSessionNameSame());
@@ -149,10 +157,19 @@ export class ArkDetailsComponent implements OnInit {
   kickPlayer(): void {
     console.log('details: kickPlayer: playerId: ' + this.playerId);
     // TODO: pass map name -- at least i think i'll need this to determine which RCOn to use
-    this.arkService.kickPlayer(this.playerId)
+    this.arkService.kickPlayer(this.playerId, this.mapName)
       .subscribe(response => {
         // TODO: STUB
         console.log('returned from kickPlayer');
+      });
+  }
+
+  getMaxMapsRunning(): void {
+    this.arkService.getMaxMapsRunning()
+      .subscribe(maxMapsRunning => {
+        this.maxMapsRunning = maxMapsRunning;
+        console.log('got maxMapsRunning');
+        console.log(maxMapsRunning);
       });
   }
 
