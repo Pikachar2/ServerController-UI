@@ -9,6 +9,7 @@ import { ArkSession } from '../ArkSession';
 export class ArkManagerComponent implements OnInit {
   @Output() statusChangeEmitter = new EventEmitter<void>();
   @Input() isOffline: Boolean = false;
+  @Input() numMapsRunning: Number;
   selectedSession: ArkSession;
   existingSessionNames: String[];
   constructor() { }

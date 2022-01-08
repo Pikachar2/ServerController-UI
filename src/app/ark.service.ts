@@ -56,19 +56,19 @@ export class ArkService {
     );
   }
 
-  saveAndStopSession(): Observable<any> {
-    const url = `${this.serverControllerUrl}/stop`;
+  saveAndStopSession(mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/stop/${mapName}`;
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to stop session.`)),
-      catchError(this.handleError<any>(`error stopping session.`))
+      tap(_ => this.log(`attempted to stop session: ${mapName}.`)),
+      catchError(this.handleError<any>(`error stopping session: ${mapName}.`))
     );
   }
 
-  saveAndExportSession(): Observable<any> {
-    const url = `${this.serverControllerUrl}/saveAndExport`;
+  saveAndExportSession(mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/saveAndExport/${mapName}`;
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to save session.`)),
-      catchError(this.handleError<any>(`error saving session.`))
+      tap(_ => this.log(`attempted to save session: ${mapName}.`)),
+      catchError(this.handleError<any>(`error saving session: ${mapName}.`))
     );
   }
 
@@ -129,13 +129,22 @@ export class ArkService {
     );
   }
 
-  kickPlayer(playerId: String): Observable<any> {
-    const url = `${this.serverControllerUrl}/kick/${playerId}`;
+  kickPlayer(playerId: String, mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/kick/${playerId}/${mapName}`;
     console.log('service: kickPlayer: url: ' + url);
 
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to kick player: ${playerId}`)),
-      catchError(this.handleError<any>(`error kicking player: ${playerId}`))
+      tap(_ => this.log(`attempted to kick player: ${playerId} from map: ${mapName}`)),
+      catchError(this.handleError<any>(`error kicking player: ${playerId} from map: ${mapName}`))
     );
   }
+
+  getMaxMapsRunning(): Observable<Number>  {
+    const url = `${this.serverControllerUrl}/maxMapsRunning`;
+    return this.http.get<Number>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`attempted to save session.`)),
+      catchError(this.handleError<Number>(`error saving session.`))
+    );
+  }
+
 }

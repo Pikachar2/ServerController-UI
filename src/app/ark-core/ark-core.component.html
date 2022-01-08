@@ -1,7 +1,9 @@
 <h1>Ark: Survival Evolved Server</h1>
 <h3>Server Status: {{serverStatus}}</h3>
+<h3>Current Session Name: {{currentSessionName}}</h3>
+<h3>Maps Online: {{mapNames}}</h3>
 <br>
 <button class="button" title="Update Ark" (click)="updateArk()">Update Ark</button>
 <a *ngIf="!isOffline" href="steam://connect/73.78.14.133:27015" class="button">Join Current Session</a>
-<app-ark-manager [isOffline]="isOffline" (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
+<app-ark-manager [isOffline]="isOffline" [numMapsRunning]="numMapsRunning" (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
 
