@@ -4,6 +4,6 @@
 <h3>Maps Online: {{mapNames}}</h3>
 <br>
 <button class="button" title="Update Ark" (click)="updateArk()">Update Ark</button>
-<a *ngIf="!isOffline" href="steam://connect/73.78.14.133:27015" class="button">Join Current Session</a>
+<a *ngIf="!isOffline" href="steam://connect/24.9.27.79:27015" class="button">Join Current Session</a>
 <app-ark-manager [isOffline]="isOffline" [numMapsRunning]="numMapsRunning" (statusChangeEmitter)="statusChanged($event)"></app-ark-manager>
 
