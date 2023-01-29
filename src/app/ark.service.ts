@@ -11,7 +11,8 @@ import { ArkSession } from './ArkSession';
   providedIn: 'root'
 })
 export class ArkService {
-  private serverControllerUrl = 'http://73.78.14.133:8081/ark';  // URL to web api
+  private serverControllerUrl = 'http://24.9.27.79:8081/ark';  // URL to web api
+//   private serverControllerUrl = 'http://73.78.14.133:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://192.168.1.25:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://127.0.0.1:8081/ark';  // URL to web api
   httpOptions = {
