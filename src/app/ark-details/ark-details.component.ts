@@ -31,7 +31,7 @@ export class ArkDetailsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.selectedSession = { sessionName: '', mapNames: [] };
-    (async () => { 
+    (async () => {
       await this.delay(1500);
       this.getMaps();
     })();
@@ -127,6 +127,6 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
