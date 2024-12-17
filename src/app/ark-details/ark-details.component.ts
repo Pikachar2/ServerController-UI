@@ -10,6 +10,7 @@ import { ArkSession } from '../ArkSession';
 export class ArkDetailsComponent implements OnInit {
   @Input() selectedSession: ArkSession;
   @Input() isOffline: Boolean = false;
+  @Input() numMapsRunning: Number;
   @Output() statusChangeEmitter = new EventEmitter<void>();
 
   sessionStatus: String = "";
@@ -24,16 +25,21 @@ export class ArkDetailsComponent implements OnInit {
 
   mapName: String;
   maps: String[];
+  maxMapsRunning: Number;
 
   playerId: String;
 
+  startedSessionName: String;
+  startedSessionCount: number = 0;
+
   constructor(private arkService: ArkService) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.selectedSession = { sessionName: '', mapNames: [] };
     (async () => {
       await this.delay(1500);
       this.getMaps();
+      this.getMaxMapsRunning();
     })();
   }
 
@@ -43,6 +49,10 @@ export class ArkDetailsComponent implements OnInit {
   }
 
   startSession(): void {
+    if(!this.startedSessionName) {
+      this.startedSessionName = this.selectedSession.sessionName;
+      this.startedSessionCount++;
+    }
     this.buttonsEnabled = false;
     this.arkService.startSession(this.selectedSession.sessionName, this.mapName)
       .subscribe(response => {
@@ -52,15 +62,18 @@ export class ArkDetailsComponent implements OnInit {
 
   saveAndExportSession(): void {
     this.buttonsEnabled = false;
-    this.arkService.saveAndExportSession()
+    // TODO: pass map name
+    this.arkService.saveAndExportSession(this.mapName)
       .subscribe(response => {
       });
     this.emitAndEnableButtons();
   }
 
   saveAndExitSession(): void {
+    this.startedSessionCount--;
     this.buttonsEnabled = false;
-    this.arkService.saveAndStopSession()
+    // TODO: pass map name
+    this.arkService.saveAndStopSession(this.mapName)
       .subscribe(response => {
         this.statusChangeEmitter.emit();
       });
@@ -112,6 +125,33 @@ export class ArkDetailsComponent implements OnInit {
     return (!this.selectedSession.sessionName || 0 === this.selectedSession.sessionName.length);
   }
 
+  isSessionNameSame(): Boolean {
+   return (this.startedSessionName === this.selectedSession.sessionName);
+  }
+
+  isMapInUse(): Boolean {
+    return this.selectedSession.mapNames.includes(this.mapName);
+  }
+
+  isMaxCountReached(): Boolean {
+    return this.numMapsRunning === this.maxMapsRunning;
+  }
+
+  isStartButtonEnabled(): Boolean {
+    var sessionNameIsPopulated = !this.isSessionNameEmpty();
+    var sessionNameIsSame = this.isSessionNameSame() && sessionNameIsPopulated;
+    var mapNotUsed = !this.isMapInUse();
+    var maxCountReached = this.isMaxCountReached();
+
+    console.log('sessionNameIsPopulated: ' + sessionNameIsPopulated);
+    console.log('sessionNameIsSame(): ' + this.isSessionNameSame());
+    console.log('sessionNameIsSame: ' + sessionNameIsSame);
+    console.log('mapNotUsed: ' + mapNotUsed); 
+    console.log('----------------');
+
+    return sessionNameIsPopulated || (sessionNameIsSame && mapNotUsed);
+  }
+
   emitAndEnableButtons() {
     this.statusChangeEmitter.emit();
     this.buttonsEnabled = true;
@@ -119,14 +159,25 @@ export class ArkDetailsComponent implements OnInit {
 
   kickPlayer(): void {
     console.log('details: kickPlayer: playerId: ' + this.playerId);
-    this.arkService.kickPlayer(this.playerId)
+    // TODO: pass map name -- at least i think i'll need this to determine which RCOn to use
+    this.arkService.kickPlayer(this.playerId, this.mapName)
       .subscribe(response => {
         // TODO: STUB
         console.log('returned from kickPlayer');
       });
   }
 
+  getMaxMapsRunning(): void {
+    this.arkService.getMaxMapsRunning()
+      .subscribe(maxMapsRunning => {
+        this.maxMapsRunning = maxMapsRunning;
+        console.log('got maxMapsRunning');
+        console.log(maxMapsRunning);
+      });
+  }
+
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
 }

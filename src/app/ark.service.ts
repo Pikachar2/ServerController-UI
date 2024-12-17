@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap, timeout } from 'rxjs/operators';
 import { ArkStatusResponse } from './arkStatusResponse';
 import { ArkConfigResponse } from './arkConfigResponse';
@@ -14,7 +14,6 @@ export class ArkService {
   private localIP = '192.168.0.25'
   private serverIP = '174.24.94.55'
   private serverControllerUrl = 'http://' + this.serverIP +':8081/ark';  // URL to web api
-  // private serverControllerUrl = 'http://24.9.27.79:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://73.78.14.133:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://192.168.1.25:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://127.0.0.1:8081/ark';  // URL to web api
@@ -71,19 +70,19 @@ export class ArkService {
     );
   }
 
-  saveAndStopSession(): Observable<any> {
-    const url = `${this.serverControllerUrl}/stop`;
+  saveAndStopSession(mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/stop/${mapName}`;
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to stop session.`)),
-      catchError(this.handleError<any>(`error stopping session.`))
+      tap(_ => this.log(`attempted to stop session: ${mapName}.`)),
+      catchError(this.handleError<any>(`error stopping session: ${mapName}.`))
     );
   }
 
-  saveAndExportSession(): Observable<any> {
-    const url = `${this.serverControllerUrl}/saveAndExport`;
+  saveAndExportSession(mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/saveAndExport/${mapName}`;
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to save session.`)),
-      catchError(this.handleError<any>(`error saving session.`))
+      tap(_ => this.log(`attempted to save session: ${mapName}.`)),
+      catchError(this.handleError<any>(`error saving session: ${mapName}.`))
     );
   }
 
@@ -144,13 +143,13 @@ export class ArkService {
     );
   }
 
-  kickPlayer(playerId: String): Observable<any> {
-    const url = `${this.serverControllerUrl}/kick/${playerId}`;
+  kickPlayer(playerId: String, mapName: String): Observable<any> {
+    const url = `${this.serverControllerUrl}/kick/${playerId}/${mapName}`;
     console.log('service: kickPlayer: url: ' + url);
 
     return this.http.get<any>(url, this.httpOptions).pipe(
-      tap(_ => this.log(`attempted to kick player: ${playerId}`)),
-      catchError(this.handleError<any>(`error kicking player: ${playerId}`))
+      tap(_ => this.log(`attempted to kick player: ${playerId} from map: ${mapName}`)),
+      catchError(this.handleError<any>(`error kicking player: ${playerId} from map: ${mapName}`))
     );
   }
 
