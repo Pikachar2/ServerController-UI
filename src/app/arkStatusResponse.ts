@@ -1,3 +1,5 @@
 export interface ArkStatusResponse {
-    status: String;
-  }
+  status: String;
+  currentSessionName: String;
+  mapNames: String[];
+}
