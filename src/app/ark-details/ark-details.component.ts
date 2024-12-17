@@ -36,8 +36,11 @@ export class ArkDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedSession = { sessionName: '', mapNames: [] };
-    this.getMaps();
-    this.getMaxMapsRunning();
+    (async () => {
+      await this.delay(1500);
+      this.getMaps();
+      this.getMaxMapsRunning();
+    })();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -171,6 +174,10 @@ export class ArkDetailsComponent implements OnInit {
         console.log('got maxMapsRunning');
         console.log(maxMapsRunning);
       });
+  }
+
+  delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
 }
