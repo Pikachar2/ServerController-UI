@@ -29,9 +29,12 @@ export class ArkDetailsComponent implements OnInit {
 
   constructor(private arkService: ArkService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.selectedSession = { sessionName: '', mapNames: [] };
-    this.getMaps();
+    (async () => { 
+      await this.delay(1500);
+      this.getMaps();
+    })();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -123,4 +126,7 @@ export class ArkDetailsComponent implements OnInit {
       });
   }
 
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
 }

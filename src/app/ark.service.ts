@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { MessageService } from './message.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError, map, tap, timeout } from 'rxjs/operators';
 import { ArkStatusResponse } from './arkStatusResponse';
 import { ArkConfigResponse } from './arkConfigResponse';
 import { ArkSession } from './ArkSession';
@@ -11,7 +11,9 @@ import { ArkSession } from './ArkSession';
   providedIn: 'root'
 })
 export class ArkService {
-  private serverControllerUrl = 'http://174.24.79.196:8081/ark';  // URL to web api
+  private localIP = '192.168.0.25'
+  private serverIP = '174.24.94.55'
+  private serverControllerUrl = 'http://' + this.serverIP +':8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://24.9.27.79:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://73.78.14.133:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://192.168.1.25:8081/ark';  // URL to web api
@@ -23,7 +25,18 @@ export class ArkService {
   constructor(
     private http: HttpClient,
     private messageService: MessageService) {
+      this.constructServerUrl();
+  }
 
+  constructServerUrl() {
+    const url = `${this.serverControllerUrl}/maps`;
+    this.http.get<String[]>(url, this.httpOptions).pipe(
+      timeout(1000)
+    ).subscribe({
+      error: error => {
+        this.serverControllerUrl = 'http://' + this.localIP +':8081/ark';
+      }
+    });
   }
 
   getStatus(): Observable<ArkStatusResponse> {
