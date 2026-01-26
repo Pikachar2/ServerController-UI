@@ -12,7 +12,7 @@ import { ArkSession } from './ArkSession';
 })
 export class ArkService {
   private localIP = '192.168.0.25'
-  private serverIP = '174.24.94.55'
+  private serverIP = '75.163.169.54'
   private serverControllerUrl = 'http://' + this.serverIP +':8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://73.78.14.133:8081/ark';  // URL to web api
   // private serverControllerUrl = 'http://192.168.1.25:8081/ark';  // URL to web api
